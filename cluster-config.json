@@ -1,0 +1,175 @@
+{
+  "cluster": {
+    "name": "agentic-cluster",
+    "version": "1.0.0",
+    "topology": "hierarchical",
+    "coordinator": "mac-studio"
+  },
+  "nodes": [
+    {
+      "id": "mac-studio",
+      "role": "orchestrator",
+      "hostname": "192.168.1.16",
+      "ssh_host": "localhost",
+      "priority": 1,
+      "capabilities": [
+        "orchestration",
+        "heavy-processing",
+        "coordination",
+        "mlx-gpu",
+        "claude-flow-coordinator",
+        "secondary-ai-inference"
+      ],
+      "ollama": {
+        "endpoint": "http://192.168.1.16:11434",
+        "model_count": 32,
+        "role": "secondary",
+        "specialties": ["vision-models", "embeddings", "general-inference"]
+      },
+      "hardware": {
+        "chip": "Apple M2 Max",
+        "model": "Mac Studio",
+        "storage": "8TB RAID0"
+      },
+      "paths": {
+        "base": "/Volumes/SSDRAID0/agentic-system",
+        "claude_flow": "/Volumes/SSDRAID0/agentic-system/claude-flow",
+        "databases": "/Volumes/SSDRAID0/agentic-system/databases",
+        "logs": "/Volumes/SSDRAID0/agentic-system/logs"
+      },
+      "mcp_servers": [
+        "enhanced-memory",
+        "voice-mode",
+        "agent-runtime-mcp",
+        "sequential-thinking",
+        "arduino-surface",
+        "safla-enhanced",
+        "claude-flow"
+      ]
+    },
+    {
+      "id": "macpro51",
+      "role": "linux-worker",
+      "hostname": "192.168.1.183",
+      "ssh_host": "macpro51.local",
+      "priority": 3,
+      "capabilities": [
+        "linux-operations",
+        "x86-tasks",
+        "containerization",
+        "claude-flow-worker",
+        "builder-node"
+      ],
+      "ollama": {
+        "endpoint": "http://192.168.1.183:11434",
+        "model_count": 2,
+        "role": "local-only",
+        "note": "DO NOT USE - CPU-only node, offload to completeu-server",
+        "specialties": ["embeddings"]
+      },
+      "hardware": {
+        "chip": "Intel Xeon",
+        "model": "Mac Pro 5,1",
+        "os": "Fedora 43",
+        "storage": "4TB HDD"
+      },
+      "paths": {
+        "base": "/mnt/agentic-system",
+        "claude_flow": "/mnt/agentic-system/claude-flow",
+        "databases": "/mnt/agentic-system/databases",
+        "logs": "/mnt/agentic-system/logs"
+      },
+      "mcp_servers": [
+        "claude-flow"
+      ]
+    },
+    {
+      "id": "macbook-air-m3",
+      "role": "mobile-researcher",
+      "hostname": "192.168.1.76",
+      "ssh_host": "Marcs-MacBook-Air.local",
+      "priority": 4,
+      "capabilities": [
+        "research",
+        "lightweight-processing",
+        "mobile-operations",
+        "claude-flow-worker"
+      ],
+      "hardware": {
+        "chip": "Apple M3",
+        "model": "MacBook Air",
+        "storage": "500GB SSD"
+      },
+      "paths": {
+        "base": "/Users/marc/agentic-system",
+        "claude_flow": "/Users/marc/agentic-system/claude-flow",
+        "databases": "/Users/marc/agentic-system/databases",
+        "logs": "/Users/marc/agentic-system/logs"
+      },
+      "mcp_servers": [
+        "claude-flow"
+      ]
+    },
+    {
+      "id": "completeu-server",
+      "role": "inference-server",
+      "hostname": "192.168.1.186",
+      "ssh_host": "completeu-server.local",
+      "priority": 2,
+      "capabilities": [
+        "ollama-inference",
+        "model-serving",
+        "api-endpoints",
+        "claude-flow-worker",
+        "primary-ai-inference"
+      ],
+      "ollama": {
+        "endpoint": "http://192.168.1.186:11434",
+        "model_count": 23,
+        "role": "primary",
+        "specialties": ["large-models", "tool-use", "embeddings"]
+      },
+      "hardware": {
+        "chip": "Apple M2 Ultra",
+        "model": "Mac Studio",
+        "storage": "2TB SSD"
+      },
+      "paths": {
+        "base": "/Users/marc/agentic-system",
+        "claude_flow": "/Users/marc/agentic-system/claude-flow",
+        "databases": "/Users/marc/agentic-system/databases",
+        "logs": "/Users/marc/agentic-system/logs"
+      },
+      "mcp_servers": [
+        "claude-flow"
+      ]
+    }
+  ],
+  "integration": {
+    "enhanced_memory": {
+      "enabled": true,
+      "shared_db": "/Volumes/SSDRAID0/agentic-system/databases/cluster/shared_memories.db",
+      "sync_interval": 300
+    },
+    "voice_mode": {
+      "enabled": true,
+      "coordinator_only": true
+    },
+    "agent_runtime": {
+      "enabled": true,
+      "distributed": true,
+      "coordinator": "mac-studio"
+    },
+    "arduino_surface": {
+      "enabled": true,
+      "coordinator_only": true,
+      "device": "/dev/tty.usbmodem8344401"
+    }
+  },
+  "deployment": {
+    "strategy": "parallel",
+    "verify_after_deploy": true,
+    "rollback_on_failure": true,
+    "health_check_timeout": 30
+  }
+}
